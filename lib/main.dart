@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:musicapp/homescreen.dart';
+import 'package:musicapp/profile.dart';
+import 'package:musicapp/splashscreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'first.dart';
-import 'signup.dart';
+import 'todo.dart';
+import 'music.dart';
 
-
+bool jwt;
 
 
 class App extends StatelessWidget {
@@ -12,24 +16,35 @@ class App extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primaryColor:Colors.green,
-        primaryColorBrightness:Brightness.dark,
+      primaryColor: Colors.lightBlueAccent
+        
         
         
       ),
-      home: FirstScreen(),
+      initialRoute: jwt? "home":"splash",
       darkTheme: ThemeData.dark(),
+      routes: <String,WidgetBuilder>{
+        "splash":(context)=>SplashScreen(),
+        "home":(context)=>HomeScreen(),
+        "first":(context)=>FirstScreen(),
+        "/profile":(context)=>HomePage(),
+        "/todo":(context)=>ToDo(),
+        "/music":(context)=>MusicScreen()
+
+      },
       
 
     );
   }
 }
-String jwt;
-Future<void> main() async{
+
+Future<void> main() 
+async{
+    WidgetsFlutterBinding.ensureInitialized();
 SharedPreferences prefs=await SharedPreferences.getInstance();
-jwt=prefs.getString("verifyUser");
+jwt=prefs.getBool("verifyUser")??false ;
+
 
 print(jwt);
-
   runApp(App());
 }

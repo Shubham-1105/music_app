@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'homescreen.dart';
 import 'signup.dart';
 
 
 
 
+
 class FirstScreen extends StatefulWidget {
   
+
    @override
   _FirstScreenState createState() => _FirstScreenState();
 }
@@ -15,8 +18,19 @@ class _FirstScreenState extends State<FirstScreen> {
   final _formKey=GlobalKey<FormState>();
   final namecontroller=TextEditingController() ;
   final passcontroller=TextEditingController();
+  String name,pass;
 
- 
+ @override
+ void initState(){
+   super.initState();
+
+ }
+ void getDetails() async{
+  SharedPreferences prefs=await SharedPreferences.getInstance();
+  name=prefs.getString("user");
+  pass=prefs.getString("pass");
+
+ }
   
   bool _secureText=true;
 
@@ -35,7 +49,7 @@ class _FirstScreenState extends State<FirstScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.cyanAccent,
+      backgroundColor: Colors.lightBlueAccent,
           body: Center(
         child:Form(
           key: _formKey,
@@ -51,7 +65,7 @@ class _FirstScreenState extends State<FirstScreen> {
                   width:double.infinity,
                   
                   
-                  child: Text("      Welcome to    experience music",style: TextStyle(
+                  child: Text("Welcome to experience music",style: TextStyle(
                     fontSize:40.0,
                     fontFamily:'Schyler',
                     fontWeight:FontWeight.bold,
@@ -72,7 +86,7 @@ class _FirstScreenState extends State<FirstScreen> {
                   
                   
                   validator:(value){
-                    if(value.isEmpty){
+                    if(value.isEmpty && value==name){
                       return "Enter your Username";
                     }
                     return null;
@@ -107,8 +121,7 @@ class _FirstScreenState extends State<FirstScreen> {
                   height: 50.0,
 
                 ),
-                RaisedButton(onPressed: (){
-                  
+                RaisedButton(onPressed: (){                
 
 
                   if(_formKey.currentState.validate()){

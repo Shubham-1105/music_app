@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'homescreen.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
-import 'first.dart';
+
 
 
 
@@ -12,9 +12,14 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
-  final _formKey=GlobalKey<FormState>();
+  final _form1Key=GlobalKey<FormState>();
   final myController1=TextEditingController();
   final myController2=TextEditingController();
+  final myController3=TextEditingController();
+  final myController4=TextEditingController();
+  final myController5=TextEditingController();
+  final myController6=TextEditingController();
+  
  
  
   bool _secureText=true;
@@ -27,7 +32,17 @@ class _SignUpState extends State<SignUp> {
 
 storeLocal()async{
   SharedPreferences store=await SharedPreferences.getInstance();
-  store.setString('verifyUser', 'true');
+  store.setBool('verifyUser', true);
+  store.setString("user", myController1.text);
+  store.setString("pass", myController2.text);
+  store.setString("phn", myController3.text);
+  store.setString("email", myController4.text);
+  if(myController5.text!=null){
+
+  store.setString("clg", myController5.text);}
+  if(myController6.text!=null){
+  store.setString("linkedln", myController6.text);}
+  
 }
   
 
@@ -36,9 +51,10 @@ storeLocal()async{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.blueGrey,
       body: Center(
         child:Form(
-          key: _formKey,
+          key: _form1Key,
           child: ListView(
             shrinkWrap: true,
             children: <Widget>[
@@ -59,7 +75,7 @@ storeLocal()async{
                     border: const OutlineInputBorder(),
                     icon: const Padding(
                           padding: const EdgeInsets.only(top: 15.0),
-                          child: const Icon(Icons.lock)),
+                          child: const Icon(Icons.person_pin)),
                   ) ,
 
 
@@ -70,7 +86,7 @@ storeLocal()async{
 
               ),
               TextFormField(
-                
+                controller: myController3,
                 keyboardType: TextInputType.number,
                 validator:(value)=>value.length!=10?"Enter 10 digits only":null,
                   decoration: InputDecoration(
@@ -78,7 +94,7 @@ storeLocal()async{
                     border: const OutlineInputBorder(),
                     icon: const Padding(
                           padding: const EdgeInsets.only(top: 15.0),
-                          child: const Icon(Icons.lock)),
+                          child: const Icon(Icons.call)),
                   ) ,
 
 
@@ -87,6 +103,7 @@ storeLocal()async{
                 height:20.0
               ),
               TextFormField(
+                controller: myController4,
                 
                 keyboardType: TextInputType.emailAddress,
                 validator: (value){
@@ -101,7 +118,7 @@ storeLocal()async{
                     border: const OutlineInputBorder(),
                     icon: const Padding(
                           padding: const EdgeInsets.only(top: 15.0),
-                          child: const Icon(Icons.lock)),
+                          child: const Icon(Icons.email)),
                   ) ,
 
 
@@ -110,6 +127,7 @@ storeLocal()async{
                 height:20.0
               ),
               TextFormField(
+                controller: myController5,
                 
                 keyboardType: TextInputType.text,
                 
@@ -120,7 +138,7 @@ storeLocal()async{
                     
                     icon: const Padding(
                           padding: const EdgeInsets.only(top: 15.0),
-                          child: const Icon(Icons.lock)),
+                          child: const Icon(Icons.school)),
                   ) ,
 
 
@@ -129,6 +147,7 @@ storeLocal()async{
                 height:20.0
               ),
               TextFormField(
+                controller: myController6,
                 
                 keyboardType: TextInputType.url,
                 
@@ -138,7 +157,7 @@ storeLocal()async{
                     border: const OutlineInputBorder(),
                     icon: const Padding(
                           padding: const EdgeInsets.only(top: 15.0),
-                          child: const Icon(Icons.lock)),
+                          child: const Icon(Icons.link)),
                   ) ,
 
 
@@ -153,7 +172,7 @@ storeLocal()async{
                     border: const OutlineInputBorder(),
                     icon: const Padding(
                           padding: const EdgeInsets.only(top: 15.0),
-                          child: const Icon(Icons.lock)),
+                          child: const Icon(Icons.remove_red_eye)),
                     
                   ) ,
                    validator: (value) => value.length < 6 ? 'Password too short.' : null,
@@ -169,18 +188,16 @@ storeLocal()async{
               shape:StadiumBorder(),
                padding:EdgeInsets.all(20.0),
                focusElevation: 40.0,
-               onPressed: () {
-                 
+               onPressed: () {            
                  
 
                  
-                 if(_formKey.currentState.validate()){
+                 if(_form1Key.currentState.validate()){
                    setState(() {
                      storeLocal();
                    });
                    
-                   Navigator.push(context, MaterialPageRoute(builder: (context)=>
-                   FirstScreen()));
+                   Navigator.pushNamed(context, "first");
                    
                  
                  }
